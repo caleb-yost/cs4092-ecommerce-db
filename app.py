@@ -175,6 +175,12 @@ def customer_menu(conn):
     for row in conn.execute("SELECT customer_id, name FROM Customer"):
         print(f"  {row[0]}: {row[1]}")
     customer_id = prompt_int("Your customer_id: ")
+    exists = conn.execute(
+        "SELECT 1 FROM Customer WHERE customer_id = ?", (customer_id,)
+    ).fetchone()
+    if not exists:
+        print("No such customer_id.")
+        return
     while True:
         print("\n-- Customer Menu --")
         print("1) Browse products\n2) Add credit card\n3) Purchase a product\n4) Back")
